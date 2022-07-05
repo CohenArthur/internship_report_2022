@@ -7,6 +7,10 @@ header-includes: |
 
 ---
 
+__FIXME__: Add logo above in footer and header
+__FIXME__: Add guard page
+
+\if 0
 1. Exec Sum (2p) -> Do last
 
 2. Thanks (1p)
@@ -58,6 +62,7 @@ header-includes: |
   3. Presentation of the results
   4. Remaining work
   5. Bibliography
+\fi
 
 # Embecosm Rust-GCC - Fixed time mission
 
@@ -77,4 +82,47 @@ I would also like to thank my girlfriend for being so supportive and helpful dur
 
 ### Objective and extent of the mission
 
+Currently, not many systems programming native language. But Rust is coming. However, only one implementation! Contribute to a second implementation (no details as that is for the Subject part)
+
+1. Not many systems programming language, Rust aims to change that
+2. However, currently only one implementation which is a stark difference from other systems programming languages.
+3. Work on a second implementation to add the language as a part of GCC (GNU Compiler Collection)
+
 ### Context and Complexity of the task
+
+1. Been working on this project for a year before that
+2. Google Summer of Code student
+3. Improve existing codebase, very big C++ project, hard to maintain and work on but worth it.
+
+## Subject
+
+### Remind the history of your subject
+
+1. Project started in 2014
+2. Philip started working on it full time in 2019
+3. Steady funding and progress since then
+
+### Motivate your choice of internship
+
+1. Extremely interesting project, that is close to my heart
+2. Chance of making big changes, making a mark on a project
+3. Lots of things to work on, very varied subject
+
+### Is in adequation with your major
+
+1. No? Not embedded systems
+2. However, it is low-level programming and systems programming. And that is a big part of GISTRE.
+
+## Positioning
+
+### Tether your subject and the company's field
+
+1. Embecosm works in compilers
+2. However, mostly backend
+3. Open Source Security provides GCC plugins for security purposes, notably for the Linux kernel.
+4. Lot of interest around a second implementation of the Rust language which could benefit from said plugins.
+
+### Present the market and its context
+
+1. There's no market. It's not a market. Stop it.
+2. People interested in funding the project maybe?
