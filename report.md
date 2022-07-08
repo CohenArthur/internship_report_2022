@@ -51,10 +51,7 @@ _FIXME_: Add more? Yes! Talk about goal of compiling standard Rust library
 [1]: https://www.zdnet.com/article/microsoft-70-percent-of-all-security-bugs-are-memory-safety-issues/
 [2]: https://www.chromium.org/Home/chromium-security/memory-safety/
 
-0. Project since 2014, full time since 2019?
-1. Been working on this project for a year before that
-2. Google Summer of Code student
-3. Improve existing codebase, very big C++ project, hard to maintain and work on but worth it.
+\newpage
 
 ## Subject
 
@@ -65,33 +62,30 @@ In 2019, Philip Herron started work on `gccrs` again and quickly obtained fundin
 I joined the project one and a half year ago, in February 2021. I've always been very interested in compilers and Rust, and had already contributed to `rustc` as well as an alternative compiling backend ([`rustc-codegen-cranelift`][3]). `gccrs` seemed like an interesting project with very interesting goals, a lot of which are also very important to me.
 Later in 2021, I applied as a Google Summer of Code student to contribute to `gccrs`, and did so under the mentoring of Philip Herron. My project focused on integrating Rust's build system tool, `cargo`, to use `gccrs` as a compiler ([project link][4]). Once the project was finished, I got back to contributing to the compiler itself, focusing on the module system, for which I gave a talk at EPITA during the LSE Winter Days ([link][5]).
 
-Soon after, Philip informed me that Brad Spengler from Open Source Security was looking into funding another engineer to work on the project. I was extremely interested in the offer, as I had grown very fond of the project and its community. Furthermore, this was a fantastic opportunity as compiler engineer jobs for open source projects are extremely hard to come across. The compiler still has a lot of interesting areas to work on, and every contribution counts. With dedication, it is extremely easy to make your mark on the project and learn tremendously while doing it.
+Soon after, Philip informed me that Brad Spengler from Open Source Security was looking into funding another engineer to work on the project. I was extremely interested in the offer, as I had grown very fond of the project and its community. Furthermore, this was a fantastic opportunity as compiler engineer jobs for open source projects are extremely hard to come across. The compiler still has a lot of interesting areas to work on, and every contribution counts. With dedication, it is extremely easy to make your mark on the project and learn tremendously while doing it. I accepted the very generous offer, and started working as an Embecosm employee, funded by Open Source Security.
 
-While working on compilers does not directly relate to my major, it is still an extremely important subject.
+While working on compilers does not directly relate to my major, it is still an extremely important subject. Embedded Software Engineers rely on compilers to produce safe, efficient and correct code, able to work on systems with very restricted resources. Rust, due to its focus on performance, is a perfect fit for embedded development as has been proved a number of times already. However, it still suffers from relying on `LLVM`, which does not support as many architectures as GCC. Working on an effort to add Rust to GCC means increasing the reach of the language, making it available on basically every platform shipping with a GCC compiler from the last 15 years.
+
+Finally, an important part of embedded systems is systems programming: Low-level, complex, important pieces of code used to build more software. Compilers are an important part of systems programming, and face a lot of the challenges faced by low-level programmers.
 
 [3]: https://github.com/bjorn3/rustc_codegen_cranelift
 [4]: https://github.com/rust-gcc/cargo-gccrs
 [5]: https://www.youtube.com/watch?v=KeX6q_s3Z-s?t=441
 
-### Is in adequation with your major
-
-1. No? Not embedded systems
-2. However, it is low-level programming and systems programming. And that is a big part of GISTRE.
-3. Plus, low-level embedded systems as TARGETS -> consumers of our work
-
 ## Positioning
 
 ### Tether your subject and the company's field
 
+3. Open Source Security provides GCC plugins for security purposes, notably for the Linux kernel.
 1. Embecosm works in compilers
 2. However, mostly backend
-3. Open Source Security provides GCC plugins for security purposes, notably for the Linux kernel.
 4. Lot of interest around a second implementation of the Rust language which could benefit from said plugins.
 
 ### Present the market and its context
 
 1. There's no market. It's not a market. Stop it.
 2. People interested in funding the project maybe?
+3. Rust-for-Linux!
 
 ## Course of the internship
 
