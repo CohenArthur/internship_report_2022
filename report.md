@@ -44,9 +44,9 @@ In an effort to improve the reach of the language, be it in terms of the amount 
 
 The GCC project is an old, complex codebase written in C++11, of around 19 million lines of code, making any changes to it extremely complex but also extremely interesting.
 
-The goal of this internship was, overall, to contribute to the state of the compiler. Specifically, some complex Rust concepts such as macros, privacy restrictions or const generics were not handled yet, and needed to be worked on to achieve a valid Rust implementation as soon as possible.
+The goal of this internship was, overall, to contribute to the state of the compiler. More specifically, some complex Rust concepts such as macros, privacy restrictions or const generics were not handled yet, and needed to be worked on to achieve a valid Rust implementation as soon as possible.
 
-_FIXME_: Add more? Yes!
+_FIXME_: Add more? Yes! Talk about goal of compiling standard Rust library
 
 [1]: https://www.zdnet.com/article/microsoft-70-percent-of-all-security-bugs-are-memory-safety-issues/
 [2]: https://www.chromium.org/Home/chromium-security/memory-safety/
@@ -58,29 +58,26 @@ _FIXME_: Add more? Yes!
 
 ## Subject
 
-### History of the compiler
+The project originally started in 2014. However, the Rust language was not yet stable and saw constant changes, which made it extremely difficult to catch up to `rustc`. Due to this the project was put on hold for a time.
 
-The project started in 2014, and has been worked on full-time since 2019 by Philip Herron, my mentor and manager for this internship. It's been making fast progress and has been evolving very quickly. I started working on the project one year and a half ago as a side-project, and participated in Google Summer of Code on this project.
+In 2019, Philip Herron started work on `gccrs` again and quickly obtained funding from Open Source Security to work on the project full-time. Philip has a lot of experience dealing with complex financial projects as well as compilers, with numerous contributions to `gcc` and alternative frontends already developed.
 
-_FIXME_: Reformat this last sentence
-_FIXME_: Add more
+I joined the project one and a half year ago, in February 2021. I've always been very interested in compilers and Rust, and had already contributed to `rustc` as well as an alternative compiling backend ([`rustc-codegen-cranelift`][3]). `gccrs` seemed like an interesting project with very interesting goals, a lot of which are also very important to me.
+Later in 2021, I applied as a Google Summer of Code student to contribute to `gccrs`, and did so under the mentoring of Philip Herron. My project focused on integrating Rust's build system tool, `cargo`, to use `gccrs` as a compiler ([project link][4]). Once the project was finished, I got back to contributing to the compiler itself, focusing on the module system, for which I gave a talk at EPITA during the LSE Winter Days ([link][5]).
 
-### Remind the history of your subject
+Soon after, Philip informed me that Brad Spengler from Open Source Security was looking into funding another engineer to work on the project. I was extremely interested in the offer, as I had grown very fond of the project and its community. Furthermore, this was a fantastic opportunity as compiler engineer jobs for open source projects are extremely hard to come across. The compiler still has a lot of interesting areas to work on, and every contribution counts. With dedication, it is extremely easy to make your mark on the project and learn tremendously while doing it.
 
-1. Project started in 2014
-2. Philip started working on it full time in 2019
-3. Steady funding and progress since then
+While working on compilers does not directly relate to my major, it is still an extremely important subject.
 
-### Motivate your choice of internship
-
-1. Extremely interesting project, that is close to my heart
-2. Chance of making big changes, making a mark on a project
-3. Lots of things to work on, very varied subject
+[3]: https://github.com/bjorn3/rustc_codegen_cranelift
+[4]: https://github.com/rust-gcc/cargo-gccrs
+[5]: https://www.youtube.com/watch?v=KeX6q_s3Z-s?t=441
 
 ### Is in adequation with your major
 
 1. No? Not embedded systems
 2. However, it is low-level programming and systems programming. And that is a big part of GISTRE.
+3. Plus, low-level embedded systems as TARGETS -> consumers of our work
 
 ## Positioning
 
@@ -95,6 +92,7 @@ _FIXME_: Add more
 
 1. There's no market. It's not a market. Stop it.
 2. People interested in funding the project maybe?
+
 ## Course of the internship
 
 ### Parts of the internship
