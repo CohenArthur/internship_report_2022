@@ -329,12 +329,15 @@ For more information about how we plan to integrate `polonius` to `gccrs`, look 
 
 ## Illustrated analysis
 
-Over the course of this internship, I've had to improve how to work efficiently in a massive C++ codebase.
+My major, embedded systems, is focused on small microcontroller architectures as well as low-level programming, namely systems programming. `gccrs` is written in C++, which can ben considered a low-level programming language. Some would argue that it sits at a much higher level than C, which is the primary language being taught in GISTRE, but it is quite lower level than Rust, Haskell or OCaml, commonly used in compiler design. Because of this, we cannot use some common functional programming techniques we would really like to employ, such as parser combinators or sum types. Despite choosing this major, I have always been interested in compiler development which is a subject taught extensively in EPITA, thanks to the Tiger compiler project and LRDE research laboratory.
 
-1. Systems programming
-2. Low-level programming
-4. Compiler development course?
-3. Choice of language? C++, Rust 
+One of our courses this year focused on GPU development, which certainly helped reminding me some concepts of C++ despite being focused around learning the CUDA ecosystem. Nonetheless, I had the opportunity to re-read on good practices and modern C++ techniques.
+
+Finally, another big part of the compiler is infrastructure. In order to help users test it, we provide a Docker image containing the compiler and `cargo` integration, which I am sometimes tasked with modifying or updating. Recently, I also worked on a dashboard to display our testsuite results in a nice way to anyone interested. This meant understanding some concepts of infrastructure, backend and security which were mentionned extensively in our virtualization class (VIRLI).
+
+What also drove me to work on `gccrs` is my interest for contributing to open source projects, which has been nurtured during my studies. My major allowed us to do some open source research, contributing to various projects such as Rust-for-Linux, and to write open source drivers in C and Rust for an embedded systems project during a particular course of the first semester. Being able to keep doing this sort of contribution as my full-time job has been a real eye opener and has secured my career choice.
+
+Having multiple group projects has also helped me understand the importance of a good contribution system. We rely heavily on `git` as a version control system on `git` as a version control system, which we've used heavily during our school projects. Having spent a lot of time working within that environment, it was easy to guide new contributors or our two GSoC students when they struggled with it.
 
 \newpage
 
@@ -357,17 +360,9 @@ I still have some work assigned in the compiler until the end of the internship,
 
 Regarding my courses at EPITA, this internship has helped strengthen all the concepts that I had been taught. From an external point of view, this project is about contributing and working with an old codebase, the GCC project being around 30 years old. The C++ standard that we are allowed to use in `gccrs` is not the most recent, so a lot of the nice modern features of the language are outside our reach.
 
-My major, embedded systems, is also focused on the usage of low-level programming languages such as C++. Some would argue that it sits at a much higher level than C, which is the primary language being taught in GISTRE, but it is quite lower level than Rust, Haskell or OCaml which are common languages used in compiler design. Because of this, we cannot use some common functional programming techniques that we would really like to employ, such as parser combinators or sum types.
-
-_FIXME_: Move this to previous section?
-
 Since I am more comfortable with imperative languages such as C, or functional languages such as Rust, which we used regularly during our embedded systems courses, it was interesting to have more experience in object oriented programming in C++.
 
-And despite choosing this major, I have always been interested in compiler development which is a subject taught extensively in EPITA, thanks to the Tiger compiler project and LRDE research laboratory.
-
-Finally, contributing to open source projects has always been a big interest of mine during my studies. My major allowed us to do some open source research, contributing to various projects such as Rust-for-Linux, and to write open source drivers in C and Rust for an embedded systems project during the first semester. Being able to keep doing this sort of contribution as my full-time job has been a real eye opener and has secured my career choice.
-
-_FIXME_: Move this to previous section?
+_FIXME_: Talk about Embecosm offering me a job
 
 ## Synthesis and Conclusion
 
