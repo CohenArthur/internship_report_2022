@@ -135,28 +135,187 @@ As a side-note, we are also working towards hiring more people at Embecosm and/o
 
 1. Add pretty diagram! How? Interlace the PDF? Take a picture?
 
+\newpage
+
 ## Engineering approach
 
-### One or more structured approache(s)
+### Const generics
 
-1. The borrow-checker
-2. The macro repetitions implementation
-    1. Figuring out an algorithm
-    2. Issue reporting
-    3. Still more to do and maintain!
+"Generics" enable programmers to share behavior across multiple types, usually by taking an underlying type as parameter. To give an example, let's take a regular Rust function, whose purpose is to make a dog eat its food:
 
-### Concrete explanation
+```rust
+fn eat(doug: Dog) {
+    doug.make_noise();
+    doug.become_happy();
+}
+```
 
-1. Show and explain what you did concretely (vs the company, the project, the team, the client...)
-    1. Versus David Edelhson
+Here, the function takes one parameter, `doug`, of type `Dog`. The function then calls the `make_noise` method on our dog, and then the `become_happy` one. Now, let's say that we want to extend this function to work with something else than dogs, for example cats.
+
+```rust
+fn dog_eat(doug: Dog) {
+    doug.make_noise();
+    doug.become_happy();
+}
+
+fn cat_eat(garf: Cat) {
+    garf.make_noise();
+    garf.become_happy();
+}
+```
+
+We can see that both the `Cat` and `Dog` type allow you to call the `make_noise` and `become_happy` methods. If we were to extend this behavior to horses, then we'd have to copy paste this function once again, naming it differently. If we wanted to make a change to the function, for example by giving it an extra `food: Food` parameter, we would then have to change three functions that are otherwise completely equivalent!
+
+Enter generics: By taking a type as a parameter, you can create multiple copies of the same function which only differ slightly. Due to the complexity of the Rust language, this code is not entirely valid, but this information is not necessary to our explanation.
+
+```rust
+//      _____ here!
+//     |
+fn eat<T>(animal: T) {
+    animal.make_noise();
+    animal.become_happy();
+}
+```
+
+We can see that the function has a new bit of syntax next to its name: `<T>`. This indicates that, on top of taking a parameter called `animal`, it also takes a type parameter called `T`. This parameter can only refer to a type. Then, we mark the `animal` parameter as a parameter of type `T`. That type `T` can then become `Dog`, `Cat`, `Horse`, or anything we want!
+
+In Rust, this resolution is done at compile time. The compiler is going to figure out that we would like to call this function with a `Dog`, a `Cat` and a `Horse`, and generate three "copies" of the function with the proper types.
+
+```rust
+fn __eat_Dog(animal: Dog) {
+    animal.make_noise();
+    animal.become_happy();
+}
+
+fn __eat_Cat(animal: Cat) {
+    animal.make_noise();
+    animal.become_happy();
+}
+
+fn __eat_Horse(animal: Horse) {
+    animal.make_noise();
+    animal.become_happy();
+}
+```
+
+Since this resolution and copying is done during compilation, it is called "monomorphization". As opposed to "polymorphism", which is a more complex concept involving the resolution of these functions while the compiled program is running, and which is not present in Rust.
+
+Nonetheless, you also sometimes want the concept of "generics" to apply to other programming constructs than types, such as values. This is called "const generics" in Rust. Let's look at another example:
+
+```rust
+// You want to compute the sum of an array
+fn sum(array: &[i32]) -> i32 {
+    let mut sum = 0;
+
+    for i in 0..array.len() {
+        sum += array[i];
+    }
+
+    sum
+}
+```
+
+This function is good, as it works with arrays of all sizes. However, it does require an extra function call to know the length of the array: `array.len()`. If we are in a situation where we can easily know the size of an array, avoiding that call could net some increase in performance.
+
+In Rust, arrays of a fixed size are marked like so:
+
+```rust
+// An array of 3 elements
+let array: [i32; 3] = [1, 2, 3];
+```
+
+Meaning that we could write the following function:
+```rust
+fn sum_3(array: &[i32; 3]) -> i32 {
+    let mut sum = 0;
+
+    for i in 0..3 {
+        sum += array[i];
+    }
+
+    sum
+}
+```
+
+However, if we were to compute the sum of an array of five elements, we would need a different function. Which would basically be a copy of the previous one. This is where const generics come into place:
+
+```rust
+//            ___ here!
+//           |
+fn sum<const N: usize>(array: &[i32; N]) -> i32 {
+    let mut sum = 0;
+
+    //           ___ used here!
+    //          |
+    for i in 0..N {
+        sum += array[i];
+    }
+
+    sum
+}
+```
+
+We can now call our `sum` functions with arrays of different fixed sizes: `[i32; 3]`, `[i32; 15]`, etc... and the compiler will generate the necessary functions for us, replacing `N` with the actual size of our array.
+
+```rust
+fn __sum_3(array: &[i32; 3]) -> i32 {
+    let mut sum = 0;
+
+    for i in 0..3 {
+        sum += array[i];
+    }
+
+    sum
+}
+
+fn __sum_15(array: &[i32; 15]) -> i32 {
+    let mut sum = 0;
+
+    for i in 0..15 {
+        sum += array[i];
+    }
+
+    sum
+}
+```
+
+This type of generic is extremely powerful and allows for very nice performance gains by relying on the compiler to perform computations rather than the resulting program. They are often used in C++, with the `constexpr` and `consteval` keyword. Rust has added support for them in the 1.50 version, which is quite recent at the time of writing. Incidentally, this meant that `gccrs` still does not support them. I was tasked with looking into their implementation, their behavior, and adding them to the compiler.
+
+The first step was to parse them. Since they use a different syntax than regular generics (`const <name>: <type>` versus `<name>`), our parser did not understand them at all.
+
+1. What are they
+3. Why does it matter
+2. When were they introduced
+
+1. Figuring out an algorithm
+2. Issue reporting
+3. Still more to do and maintain!
+
+1. Research
+2. Implementation
+    1. Parsing
+    2. Ambiguous AST
+    3. Disambiguation
+3. Tying it down with the GSoC
+4. Who's using `g++` constant folder
+
+### Borrow-checking in `gccrs`
+
+1. Blogpost
+2. Versus David Edelhson
+3. Logic behind it
 
 ## Illustrated analysis
 
-1. Detail 2 to 3 competences in relationship with your major
+1. Systems programming
+2. Low-level programming
+3. Choice of language? C++, Rust
 
 ## Added value of the internship
 
 ### Internship's interest for the company
+
+1. What I did. Very good! Wawaweewa!
 
 ### Internship's interest for the project
 
@@ -169,15 +328,28 @@ _FIXME_: Rework the title
 
 1. Usage of concepts and methodologies used in class
 2. Acquisition of new skills
+    1. Compiler design
+    2. More compiler
+    3. More OOP, C++
+    4. More contributing, managing
+    5. Working in a company
 
 ## Synthesis and Conclusion
+
+1. I got a job!
+2. I enjoyed it so, so much
 
 ### Introspection
 
 1. Between the beginning and the end of the internship
+    1. I evolved, I feel like I brought a lot to the project, I had a lot of fun and I learned a tremendous amount
+    2. Learned to mento GSoC student
 
 ### Evolution of your career plans/personal project
 
 1. Confirmation or evolution of your professional project
+    1. Confirmed!
 
 ### Vision of the business world
+
+1. I will never work in a big company. Small companies all the way
