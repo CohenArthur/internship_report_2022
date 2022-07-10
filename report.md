@@ -186,16 +186,8 @@ fn __eat_Dog(animal: Dog) {
     animal.make_noise();
     animal.become_happy();
 }
-
-fn __eat_Cat(animal: Cat) {
-    animal.make_noise();
-    animal.become_happy();
-}
-
-fn __eat_Horse(animal: Horse) {
-    animal.make_noise();
-    animal.become_happy();
-}
+fn __eat_Cat(animal: Cat) { /* same code */ }
+fn __eat_Horse(animal: Horse) { /* same code */ }
 ```
 
 Since this resolution and copying is done during compilation, it is called "monomorphization". As opposed to "polymorphism", which is a more complex concept involving the resolution of these functions while the compiled program is running, and which is not present in Rust.
@@ -314,27 +306,34 @@ Once these nodes are disambiguated, they are lowered to newly-added HIR nodes. T
 
 Finally, these nodes are compiled to TREE and go through "constant evaluation": This process allows using almost any construct of the language for constant expressions: Conditionals, loops, functions... And one of our Google Summer of Code student's project is to port over `g++`'s constant evaluator to `gccrs`. Once that project is done, we will be able to plug the TREE constant expressions into this evaluator, effectively performing constant evaluation at compile-time.
 
-1. What are they
-3. Why does it matter
-2. When were they introduced
+### Borrow-checking
 
-1. Figuring out an algorithm
-2. Issue reporting
-3. Still more to do and maintain!
+Another even more important feature of the `rustc` compiler is its borrow-checker, a static analysis pass whose role is to avoid memory vulnerabilities mentioned in this report's introduction. To be more precise, the borrow-checker prevents double-frees, use-after-frees, dangling pointers, memory leaks, pointer aliasing errors, immutability violation, double mutability, data-races, and more. A lot of Rust programmers consider it to be the main attraction and their favorite part of the language. Without it, Rust would not be as safe as it is. However, since it is simply an "error reporting pass", similar to how a C++ compiler with static analysis could warn you about unclosed file descriptors or out-of-bound writes, it is not *necessary* to produce assembly code. On account of this fact, the planning for the compiler's progress established in 2019 by Philip did not initially plan on integrating a borrow-checker. This choice makes sense: Adding this feature is extra effort, which does not in itself benefit the compiler, simply the user experience. Furthermore, upcoming compilers are usually first tasked with compiling valid code: Proper error messages, error passes and user feedback are not a priority. Finally, adding a borrow-checker would mean adding months, if not years of work on top of the schedule: Funders would certainly not be happy with these timelines.
+
+Nonetheless, shortly after my arrival as an engineer on the project, the question was raised once again. Would `gccrs` *really* be a Rust compiler without a borrow-checker? Philipp Krones, another Embecosm colleague at the time and prominent figure in the Rust community, started arguing with me on his side that a borrow-checker was necessary. That without such a feature, `gccrs`' reputation would be tarnished and never recover, and that a bad image would linger over the project for years. Furthermore, it was clear to us and the rest of the community that Rust without a borrow-checker was *not* Rust, but an unsafe superset of the language. Philip Herron, when faced with this dilemma, took great care of arguing against us despite being convinced that the project needed a borrow-checker. This arguing was done so that all corners would be covered; All possible questions by the funders of the project, answered.
+
+Thanks to his dedication in making sure the project had proper reasons for adding months of work on top of the existing schedule, we spent a few weeks researching what it would mean fo r us to work on this, how to do it, and how to integrate it to `gccrs`.
+
+We realized that we could leverage `polonius` ([link][8]), an alternate implementation of the borrow-checker, developed as a separate Rust library. This library aims to replace the current borrow-checker soon, and is based on "simple" mathematical rules executed in a prolog-like model. We ran the `rustc` testsuite using `polonius` as a borrow-checker, and took note of the differences, marking them in various ways.
+
+![A sample of the testsuite results. Over 3000 testcases were analyzed\label{research}](polonius-research.png){ width=75% }
+
+However, integrating with `polonius` represents a massive effort. It is still closely tied with some information specific to `rustc`'s internal representation, `MIR`. We will need to contribute to `polonius` and maybe even `rustc` in order to bridge that gap and make the library available to our compiler as well. Nonetheless, this solution avoids us having to deal with the complex mathematical theory behind borrow-checking and then implementing it.
+
+When presented with the issue, the funders of the project agreed that it was the right course of action. Thanks to our complete research and planning, as well as good argumentation from Philip Herron and I, they were happy with considering adding a borrow-checker on top of the existing planning. Thus, we will be starting work on this project later on this year. By taking all possible precautions and trying to answer questions in advance, we were able to convince people that might have opposed this idea had we not done our due dilligence.
+
+For more information about how we plan to integrate `polonius` to `gccrs`, look out for a blogpost on the Rust Foundation website ([link][9]) or have a look the various graphs we've produced during our research (figure \ref{polonius} and \ref{polonius-two}).
+
+[8]: https://github.com/rust-lang/polonius
+[9]: https://foundation.rust-lang.org/news
 
 1. Research
-2. Implementation
-    1. Parsing
-    2. Ambiguous AST
-    3. Disambiguation
-3. Tying it down with the GSoC
-4. Who's using `g++` constant folder
-
-### Borrow-checking in `gccrs`
-
-1. Blogpost
-2. Versus David Edelhson
-3. Logic behind it
+    1. HackMD screens
+    2. Mermaid graphs
+    3. Pushback from people
+    4. Blogpost
+2. Integration
+3. Plans
 
 ## Illustrated analysis
 
@@ -384,3 +383,9 @@ _FIXME_: Rework the title
 ### Vision of the business world
 
 1. I will never work in a big company. Small companies all the way
+
+### Annexes
+
+![Building and shipping polonius\label{polonius}](polonius1.png)
+
+![Compilation pipeline\label{polonius-two}](polonius2.png)
