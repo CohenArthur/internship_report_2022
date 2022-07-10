@@ -355,28 +355,19 @@ For our main funder, Open Source Security, I think they are happy with my perfor
 
 I still have some work assigned in the compiler until the end of the internship, as I haven't touched on compiler intrinsics yet. I hope to get through it quickly so that I can work on integrating the `polonius` library further.
 
-Regarding my courses at EPITA, this internship has helped strengthen all the concepts that I had been taught. Since 
+Regarding my courses at EPITA, this internship has helped strengthen all the concepts that I had been taught. From an external point of view, this project is about contributing and working with an old codebase, the GCC project being around 30 years old. The C++ standard that we are allowed to use in `gccrs` is not the most recent, so a lot of the nice modern features of the language are outside our reach.
 
-### Internship's interest for the company
+My major, embedded systems, is also focused on the usage of low-level programming languages such as C++. Some would argue that it sits at a much higher level than C, which is the primary language being taught in GISTRE, but it is quite lower level than Rust, Haskell or OCaml which are common languages used in compiler design. Because of this, we cannot use some common functional programming techniques that we would really like to employ, such as parser combinators or sum types.
 
-1. What I did. Very good! Wawaweewa!
+_FIXME_: Move this to previous section?
 
-### Internship's interest for the project
+Since I am more comfortable with imperative languages such as C, or functional languages such as Rust, which we used regularly during our embedded systems courses, it was interesting to have more experience in object oriented programming in C++.
 
-1. Qualitative and quantitative
-2. Show your results
+And despite choosing this major, I have always been interested in compiler development which is a subject taught extensively in EPITA, thanks to the Tiger compiler project and LRDE research laboratory.
 
-### School's implication - On the school's side?
+Finally, contributing to open source projects has always been a big interest of mine during my studies. My major allowed us to do some open source research, contributing to various projects such as Rust-for-Linux, and to write open source drivers in C and Rust for an embedded systems project during the first semester. Being able to keep doing this sort of contribution as my full-time job has been a real eye opener and has secured my career choice.
 
-_FIXME_: Rework the title
-
-1. Usage of concepts and methodologies used in class
-2. Acquisition of new skills
-    1. Compiler design
-    2. More compiler
-    3. More OOP, C++
-    4. More contributing, managing
-    5. Working in a company
+_FIXME_: Move this to previous section?
 
 ## Synthesis and Conclusion
 
