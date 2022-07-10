@@ -327,21 +327,35 @@ For more information about how we plan to integrate `polonius` to `gccrs`, look 
 [8]: https://github.com/rust-lang/polonius
 [9]: https://foundation.rust-lang.org/news
 
-1. Research
-    1. HackMD screens
-    2. Mermaid graphs
-    3. Pushback from people
-    4. Blogpost
-2. Integration
-3. Plans
-
 ## Illustrated analysis
+
+Over the course of this internship, I've had to improve how to work efficiently in a massive C++ codebase.
 
 1. Systems programming
 2. Low-level programming
-3. Choice of language? C++, Rust
+4. Compiler development course?
+3. Choice of language? C++, Rust 
+
+\newpage
 
 ## Added value of the internship
+
+According to Philip Herron, my mentor during the last few months, I have helped a lot on the project. The original internship plan was as follows:
+
+1. Spend one month developing macro test cases
+2. Spend two months working with Philip on adding macro support in the compiler
+3. Take ownership inside the compiler
+    1. Compiler intrinsics
+    2. Uninitialized variable scan
+    3. Mutability error scan
+
+In the end, macro support as well as support for macro repetitions was completed in around a month, closing up that milestone which was more complex than at first glance. Then, I dedicated some time into the borrow-checker research, as well as starting to create a proof-of-concept integration with `polonius` within the compiler which proved that it was possible. This took some time but answered a question which lingered on the project for quite a while. Then, Philip assigned me to tackle the privacy pass, which prevents used from accessing functions or structure fields that are not marked as "public", making it possible to have encapsulation within your Rust code. I spent some time marketing the project at Embedded World, which nested a lot of interest for it. Finally, more recently, since I was comfortable with the compiler and proficient in what I was doing, Philip felt comfortable making me a mentor for this year's Google Summer of Code which enabled the project to have one more student working on it this summer.
+
+For our main funder, Open Source Security, I think they are happy with my performance. I helped free Philip of a lot of annoying tasks, and enabled him to work on complex bugs within the typechecker and bring us closer to compiling `libcore`, one of the main components of the Rust standard library.
+
+I still have some work assigned in the compiler until the end of the internship, as I haven't touched on compiler intrinsics yet. I hope to get through it quickly so that I can work on integrating the `polonius` library further.
+
+Regarding my courses at EPITA, this internship has helped strengthen all the concepts that I had been taught. Since 
 
 ### Internship's interest for the company
 
