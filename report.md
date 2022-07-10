@@ -281,7 +281,38 @@ fn __sum_15(array: &[i32; 15]) -> i32 {
 
 This type of generic is extremely powerful and allows for very nice performance gains by relying on the compiler to perform computations rather than the resulting program. They are often used in C++, with the `constexpr` and `consteval` keyword. Rust has added support for them in the 1.50 version, which is quite recent at the time of writing. Incidentally, this meant that `gccrs` still does not support them. I was tasked with looking into their implementation, their behavior, and adding them to the compiler.
 
-The first step was to parse them. Since they use a different syntax than regular generics (`const <name>: <type>` versus `<name>`), our parser did not understand them at all.
+The first step was to parse them. Since they use a different syntax than regular generics (`const $name: $type` versus `$name`), our parser did not understand them at all and would produce errors about invalid Rust code. Then, we needed to create new nodes for our AST to understand these const generics, namely two of them:
+
+1. Const generic parameters, which refer to the "declaration" of these const generics:
+
+```rust
+fn sum<const N: usize>() { /* ... */ }
+```
+
+2. Const generic arguments, which refer to their application, when for example calling a const generic function:
+
+```rust
+let my_sum = sum<3>();
+let my_sum = sum<{ 3 + 1 }>();
+
+const M: usize = 15;
+
+let my_sum = sum<M>();
+```
+
+This lead to another problem, also encountered by `rustc`. When parsing the following statement:
+```rust
+let my_sum = sum<M>();
+```
+The parser cannot possibly know whether `M` refers to a generic type or a const generic argument. Later on in the compiler pipeline, we will be able to differentiate because we will know that a const value named `M` has been declared. For now however, that must remain ambiguous.
+
+Our new AST type is thus split in two: Either it is a const generic argument for sure (`15`, `{ 3 + 1 }`, `{ M }` are necessarily const generic arguments according to the Rust language), either it is a type or a const generic.
+
+Right after in the compiler, before AST lowering, the AST undergoes "name resolution". A pass which ties usages of a name and its origin. This is the place where disambiguation happens for our const generic arguments.
+
+Once these nodes are disambiguated, they are lowered to newly-added HIR nodes. These nodes then undergo a variety of transformations such as typechecking, ensuring that the generic is of an allowed type, and that the expression given in const generic argument fits the type of the const generic parameter.
+
+Finally, these nodes are compiled to TREE and go through "constant evaluation": This process allows using almost any construct of the language for constant expressions: Conditionals, loops, functions... And one of our Google Summer of Code student's project is to port over `g++`'s constant evaluator to `gccrs`. Once that project is done, we will be able to plug the TREE constant expressions into this evaluator, effectively performing constant evaluation at compile-time.
 
 1. What are they
 3. Why does it matter
