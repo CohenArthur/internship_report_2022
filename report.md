@@ -1,18 +1,17 @@
 ---
-geometry: margin=3.5cm
+geometry: "left=3.5cm,right=3.5cm,top=3cm,bottom=3cm"
 header-includes: |
     \usepackage{fancyhdr}
     \pagestyle{fancy} \fancyhead[L]{Embecosm Rust-GCC\\ Arthur Cohen}
     \rhead{Promotion 2022}
+    \lfoot{\includegraphics[height=1cm]{embecosm.png}}
+    \rfoot{\includegraphics[height=1cm]{gccrs.png}}
 
 ---
 
-_FIXME_: Add logo above in footer and header
+# Rust-GCC
+
 _FIXME_: Add guard page
-
-# Embecosm Rust-GCC - Fixed time mission
-
-_FIXME_: Fix the title
 
 ## Thanks
 
@@ -46,8 +45,6 @@ The GCC project is an old, complex codebase written in C++11, of around 19 milli
 
 The goal of this internship was, overall, to contribute to the state of the compiler. More specifically, some complex Rust concepts such as macros, privacy restrictions or const generics were not handled yet, and needed to be worked on to achieve a valid Rust implementation as soon as possible.
 
-_FIXME_: Add more? Yes! Talk about goal of compiling standard Rust library
-
 [1]: https://www.zdnet.com/article/microsoft-70-percent-of-all-security-bugs-are-memory-safety-issues/
 [2]: https://www.chromium.org/Home/chromium-security/memory-safety/
 
@@ -72,8 +69,6 @@ Finally, an important part of embedded systems is systems programming: Low-level
 [4]: https://github.com/rust-gcc/cargo-gccrs
 [5]: https://www.youtube.com/watch?v=KeX6q_s3Z-s?t=441
 
-_FIXME_: Can we add anything more to this? A little more content?
-
 \newpage
 
 ## Positioning
@@ -84,14 +79,9 @@ Open Source Security aims at enhancing security in core open source components u
 
 To understand at which level these plugins operate, one needs to understand how compilers typically work. First, the user's code, written in their favorite language, gets parsed and translated into an abstract syntax tree (AST). This tree represents the program in a different way, assigning each programming operation (addition, function call, creation of a variable...) to a type of "node" inside the compiler. This AST is then lowered to an internal, high level intermediate representation (HIR). This process usually involve various passes such as name resolving, disambiguation or macro expansion. The HIR, usually more detailed than the AST, gets through another set of transformations: type-checking, some optimisations, some lints, errors for the user about their mistakes, warnings... Finally, this HIR is lowered to a low-level intermediate representation. Of course, all compilers are different: `rustc` lowers its HIR to MIR (mid-level intermediate representation) before lowering it to LLVM IR (`LLVM`'s intermediate representation), while, GCC compilers usually lower their HIR to GCC's intermediate language, `GENERIC` or `TREE`. This low-level representation is then optimized, analyzed, maybe inlined... and gets finally transformed into assembly language.
 
-GCC plugins operate on `GIMPLE`, a subset of the `GENERIC` representation used by all GCC compilers. Simply put, this means that GCC plugins written to target C programs such as the Linux kernel can also be used for all languages present in the GCC project. With `gccrs`, they could also be used for Rust programs, enabling even more safety than what the language already offers. Open Source Security, which has already written numerous of these plugins, aims to use them for upcoming Rust drivers in the Linux kernel, as the language is currently being integrated in the operatin system with the Rust-for-Linux project ([*link*][6]).
+GCC plugins operate on `GIMPLE`, a subset of the `GENERIC` representation used by all GCC compilers. Simply put, this means that GCC plugins written to target C programs such as the Linux kernel can also be used for all languages present in the GCC project. With `gccrs`, they could also be used for Rust programs, enabling even more safety than what the language already offers. Open Source Security, which has already written numerous of these plugins, aims to use them for upcoming Rust drivers in the Linux kernel, as the language is currently being integrated in the operating system with the Rust-for-Linux project ([*link*][6]).
 
 Embecosm, on the other hand, is a compiler company: They are tasked with integrating the GCC and LLVM projects for various customer architectures, or even new architectures entirely. The company's engineers have intimate knowledge of these compilers and help guide the `gccrs` project in the right direction by providing management and feedback. Furthermore, the company is extremely interested in the Rust language, providing support, training, and contributing to its existing implementation whenever possible.
-
-_FIXME_: Add more on Embecosm?
-
-2. People interested in funding the project maybe?
-3. Rust-for-Linux!
 
 [6]: https://github.com/Rust-for-Linux
 
@@ -356,33 +346,37 @@ In the end, macro support as well as support for macro repetitions was completed
 
 For our main funder, Open Source Security, I think they are happy with my performance. I helped free Philip of a lot of annoying tasks, and enabled him to work on complex bugs within the typechecker and bring us closer to compiling `libcore`, one of the main components of the Rust standard library.
 
-I still have some work assigned in the compiler until the end of the internship, as I haven't touched on compiler intrinsics yet. I hope to get through it quickly so that I can work on integrating the `polonius` library further.
+![Contributions over the internship](contributions.png){ width=75% }
+
+Our second funder Embecosm also seems happy with the work I have produced, as they have offered me to join the company as a full-time employee: Either as a developer on `gccrs` if Open Source Security's funding continues, or as one of the engineers working on their projects and Rust knowledge.
+
+I still have some work assigned in the compiler until the end of the internship, as I haven't touched on compiler intrinsics yet. I need to finish the work started on const generics, eventually translating my current work to `TREE` nodes and tethering it with our student's Google Summer of Code project, as well as work on "overflow traps", extra checks added during compilation so that Rust programs in debug mode refuse to overflow their integer values. I hope to get through it quickly so that I can work on integrating the `polonius` library further.
 
 Regarding my courses at EPITA, this internship has helped strengthen all the concepts that I had been taught. From an external point of view, this project is about contributing and working with an old codebase, the GCC project being around 30 years old. The C++ standard that we are allowed to use in `gccrs` is not the most recent, so a lot of the nice modern features of the language are outside our reach.
 
 Since I am more comfortable with imperative languages such as C, or functional languages such as Rust, which we used regularly during our embedded systems courses, it was interesting to have more experience in object oriented programming in C++.
 
-_FIXME_: Talk about Embecosm offering me a job
+\newpage
 
 ## Synthesis and Conclusion
 
-1. I got a job!
-2. I enjoyed it so, so much
+My overall feeling for that internship is that I am extremely lucky. Philip's mentoring has been fantastic and I'd like to thank him once again for giving me the opportunity to work with him on this project.
 
 ### Introspection
 
-1. Between the beginning and the end of the internship
-    1. I evolved, I feel like I brought a lot to the project, I had a lot of fun and I learned a tremendous amount
-    2. Learned to mento GSoC student
+Between the beginning and the end of the internship, I feel like I evolved and learned a lot. I got more efficient at my own workflow, at contributing, and at using my tools. I learned a lot about working in a company environment, interacting with colleagues, and exposing my ideas in meetings. I have also learned a lot on the management side, as I have had to start mentoring a Google Summer of Code student as well as attend trade fairs to display our project.
+
+I am extremely pleased that I had this opportunity and am going to accept Embecosm's job offer. I hope the project keeps receiving funding so that I can keep working `gccrs` as a full-time engineer.
 
 ### Evolution of your career plans/personal project
 
-1. Confirmation or evolution of your professional project
-    1. Confirmed!
+Before this internship, working on an open-source compiler as a full-time job was more of a "dream": I did not expect to achieve such a position, and would have been happy working in embedded systems or systems programming as intended by my major. Having the chance to do such an internship in such good conditions has strengthened this dream and made me realize that it was actually in reach. Should Open Source Security want to continue funding the project, I would be thrilled to keep working on `gccrs`. Should that not be possible, I would be thrilled to continue working for Embecosm which also works on contributing to the GCC and LLVM project, two open source compilers.
 
 ### Vision of the business world
 
-1. I will never work in a big company. Small companies all the way
+Working at Embecosm, in a small environment where everyone knows each other, has helped me realize that I never want to work in a massive corporation. It has been incredibly eye-opening to work close to the company's CTO, CEO, to be in a relationship with all my colleagues, and to have means and help to work on our project rather than hurdles thrown at us by management. Philip and I are free to organize our work however we want, with the company's experienced managers to guide us whenever needed.
+
+We do not have to submit to a company's ticket tracking software or any other development obligation. We are entirely free in our process which is incredible and really productive. Furthermore, Embecosm is really progressive in the way we complete our work: As long as we work our expected 40 hours a week, we are free to organize them however we want. I can decide to work on a saturday and take a day off on a thursday. I can start working at 5am and stop early in the afternoon. It is really liberating and enables a very good work-life balance, which is an important part of the company. This is not something that I would expect to find in a bigger company, especially in France. Philip and I are also encouraged to do talks, attend conferences, even abroad, for example with GNU Cauldron being held in Prague in September, which is a very good learning opportunity.
 
 ### Annexes
 
