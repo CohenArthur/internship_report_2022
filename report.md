@@ -38,6 +38,30 @@ header-includes: |
 
 \restoregeometry
 
+\newpage
+
+## Executive Summary
+
+This report will detail the 6-month long internship I undertook at Embecosm as part of my final year of studying at EPITA. During this period, I had the opportunity to work on `gccrs`, an open-source Rust compiler. This project aims to be the second "mainstream" Rust compiler to be developed, and would like to become an alternative reimplementation to `rustc`, the official Rust compiler.
+
+Working on an alternative compiler is a way to broaden the reach of the language: Reach more people, more platforms and more organizations. We are trying to benefit the language in our own way by working on this project.
+
+The compiler is open-source, meaning that you can read on all the code, progress, contributions or changes made by the team. This is an extremely important part of the project, as it enables contributors from all over the world to make their mark on the project. Thanks to careful reviewing, all pieces of code are verified before being added to the project. On top of being open-source, this project is also free software, meaning that anyone wanting to modify `gccrs`' code must make their modifications available. This tool helps ensure companies do not simply benefit from the work we put in and never give back.
+
+As I mentioned, we have many contributors working together as one big team towards a shared goal. Because of this, it is extremely important to learn "how" to contribute and work as a team.
+
+Since the project is also a very big, very complicated C++ codebase, it takes a lot of time to learn how to work within it. We also have to figure out how to work with our "clients", companies funding us to work on this project like Open Source Security and Embecosm.
+
+In order to display the project out there, we also have to attend and give a number of talks: Live Embedded Event, Linux Plumbers Conference, GNU Cauldron, Kangrejos... are some examples of the places where the project has been or will be displayed during these 6 months.
+
+Another venue where the compiler can be of interest is trade fairs: Since these usually bring a lot of people from the tech industry together, it is interesting to reach for more funding or potential clients. Thanks to Embecosm, we had the chance to showcase our compiler at Embedded World in Nuremberg, where it gathered a lot of interest.
+
+This internship also taught me a lot in terms of management and supervising, as I had the opportunity to participate in two engineering interviews, one of which happened during Embedded World and for a possible future hire who might work on `gccrs`, as well as mentor a student for multiple months for the Google Summer of Code.
+
+Overall, this internship was such a positive experience that it's hard to put it into words. I got offered a job and will take it, and I hope to keep working on the same project for years to come.
+
+\newpage
+
 ## Thanks
 
 I'd like to thanks to Open Source Security and Embecosm for funding us to work on this project. Jeremy Bennett, for his management and the experience he brought to our development, and Brad Spengler, for being kind and benevolent.
@@ -51,8 +75,6 @@ I would also like to thank my girlfriend for being so supportive and helpful dur
 \newpage
 
 ## Introduction
-
-Currently, not many systems programming native language. But Rust is coming. However, only one implementation! Contribute to a second implementation (no details as that is for the Subject part)
 
 In our current programming ecosystem, not many programming languages are usable to target small embedded architectures as well as large multithreaded applications. These languages, where speed of execution is a major focus, are mostly comprised of C and C++.
 
@@ -145,10 +167,6 @@ Finally, Embecosm also gave us a platform to promote the project at a famous tra
 As a side-note, we are also working towards hiring more people at Embecosm and/or to work on `gccrs`. In that regard, I have helped conduct two of Embecosm's engineering interviews for positions in our German office, asking them technical questions or questioning them about their compiler experience.
 
 [7]: https://thephilbert.io
-
-### Gantt Diagram
-
-1. Add pretty diagram! How? Interlace the PDF? Take a picture?
 
 \newpage
 
@@ -244,6 +262,8 @@ fn sum_3(array: &[i32; 3]) -> i32 {
 }
 ```
 
+\newpage
+
 However, if we were to compute the sum of an array of five elements, we would need a different function. Which would basically be a copy of the previous one. This is where const generics come into place:
 
 ```rust
@@ -288,6 +308,8 @@ fn __sum_15(array: &[i32; 15]) -> i32 {
 
 This type of generic is extremely powerful and allows for very nice performance gains by relying on the compiler to perform computations rather than the resulting program. They are often used in C++, with the `constexpr` and `consteval` keyword. Rust has added support for them in the 1.50 version, which is quite recent at the time of writing. Incidentally, this meant that `gccrs` still does not support them. I was tasked with looking into their implementation, their behavior, and adding them to the compiler.
 
+\newpage
+
 The first step was to parse them. Since they use a different syntax than regular generics (`const $name: $type` versus `$name`), our parser did not understand them at all and would produce errors about invalid Rust code. Then, we needed to create new nodes for our AST to understand these const generics, namely two of them:
 
 1. Const generic parameters, which refer to the "declaration" of these const generics:
@@ -327,7 +349,7 @@ Another even more important feature of the `rustc` compiler is its borrow-checke
 
 Nonetheless, shortly after my arrival as an engineer on the project, the question was raised once again. Would `gccrs` *really* be a Rust compiler without a borrow-checker? Philipp Krones, another Embecosm colleague at the time and prominent figure in the Rust community, started arguing with me on his side that a borrow-checker was necessary. That without such a feature, `gccrs`' reputation would be tarnished and never recover, and that a bad image would linger over the project for years. Furthermore, it was clear to us and the rest of the community that Rust without a borrow-checker was *not* Rust, but an unsafe superset of the language. Philip Herron, when faced with this dilemma, took great care of arguing against us despite being convinced that the project needed a borrow-checker. This arguing was done so that all corners would be covered; All possible questions by the funders of the project, answered.
 
-Thanks to his dedication in making sure the project had proper reasons for adding months of work on top of the existing schedule, we spent a few weeks researching what it would mean fo r us to work on this, how to do it, and how to integrate it to `gccrs`.
+Thanks to his dedication in making sure the project had proper reasons for adding months of work on top of the existing schedule, we spent a few weeks researching what it would mean for us to work on this, how to do it, and how to integrate it to `gccrs`.
 
 We realized that we could leverage `polonius` ([link][8]), an alternate implementation of the borrow-checker, developed as a separate Rust library. This library aims to replace the current borrow-checker soon, and is based on "simple" mathematical rules executed in a prolog-like model. We ran the `rustc` testsuite using `polonius` as a borrow-checker, and took note of the differences, marking them in various ways.
 
@@ -342,6 +364,8 @@ For more information about how we plan to integrate `polonius` to `gccrs`, look 
 [8]: https://github.com/rust-lang/polonius
 [9]: https://foundation.rust-lang.org/news
 
+\newpage
+
 ## Illustrated analysis
 
 My major, embedded systems, is focused on small microcontroller architectures as well as low-level programming, namely systems programming. `gccrs` is written in C++, which can ben considered a low-level programming language. Some would argue that it sits at a much higher level than C, which is the primary language being taught in GISTRE, but it is quite lower level than Rust, Haskell or OCaml, commonly used in compiler design. Because of this, we cannot use some common functional programming techniques we would really like to employ, such as parser combinators or sum types. Despite choosing this major, I have always been interested in compiler development which is a subject taught extensively in EPITA, thanks to the Tiger compiler project and LRDE research laboratory.
@@ -352,7 +376,7 @@ Finally, another big part of the compiler is infrastructure. In order to help us
 
 What also drove me to work on `gccrs` is my interest for contributing to open source projects, which has been nurtured during my studies. My major allowed us to do some open source research, contributing to various projects such as Rust-for-Linux, and to write open source drivers in C and Rust for an embedded systems project during a particular course of the first semester. Being able to keep doing this sort of contribution as my full-time job has been a real eye opener and has secured my career choice.
 
-Having multiple group projects has also helped me understand the importance of a good contribution system. We rely heavily on `git` as a version control system on `git` as a version control system, which we've used heavily during our school projects. Having spent a lot of time working within that environment, it was easy to guide new contributors or our two GSoC students when they struggled with it.
+Having multiple group projects has also helped me understand the importance of a good contribution system. We rely heavily on `git` as a version control system, which we've used heavily during our school projects. Having spent a lot of time working within that environment, it was easy to guide new contributors or our two GSoC students when they struggled with it.
 
 \newpage
 
