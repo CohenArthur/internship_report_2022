@@ -9,9 +9,34 @@ header-includes: |
 
 ---
 
-# Rust-GCC
+\vspace{5mm}
 
-_FIXME_: Add guard page
+## 2022 \hfill GISTRE MAJOR
+
+\vspace*{\fill}
+\begin{center}
+    \begin{minipage}{\textwidth}
+        \centering
+        $\vcenter{\hbox{\includegraphics[width=0.4\textwidth]{gccrs.png}}}$
+    \end{minipage}
+
+    \textbf{\Large Rust-GCC}
+
+    \vspace{5mm}
+
+    \begin{minipage}{0.8\textwidth}
+        \centering
+	  Fixed time mission - Compiler Engineer for Rust-GCC
+    \end{minipage}
+
+    \vspace{8mm}
+
+    \textbf{Manager:} Philip Herron
+
+\end{center}
+\vspace*{\fill}
+
+\restoregeometry
 
 ## Thanks
 
