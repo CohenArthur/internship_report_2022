@@ -17,7 +17,7 @@ header-includes: |
 \begin{center}
     \begin{minipage}{\textwidth}
         \centering
-        $\vcenter{\hbox{\includegraphics[width=0.4\textwidth]{gccrs.png}}}$
+        $\vcenter{\hbox{\includegraphics[width=1\textwidth]{gccrs.png}}}$
     \end{minipage}
 
     \textbf{\Large Rust-GCC}
